@@ -1,0 +1,33 @@
+From 2fb48865cf920b4696c4de8bb046e11ddeb963e3 Mon Sep 17 00:00:00 2001
+From: Andrew Abbott <andrew@mirx.dev>
+Date: Fri, 13 May 2022 18:33:08 +1000
+Subject: [PATCH] Remove -Werror
+
+I get this warning that prevents the build:
+
+In file included from core/cortex-m/mpu.c:11:
+include/task.h:52:12: error: inline function 'in_interrupt_context' declared but never defined [-Werror]
+   52 | inline int in_interrupt_context(void);
+      |            ^~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make: *** [Makefile.rules:187: /nix/store/4ang203l815v5rdkz89lf8971wcldr4k-chrome-ec-samus/core/cortex-m/mpu.o] Error 1
+---
+ Makefile.toolchain | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.toolchain b/Makefile.toolchain
+index a069fea3c..1d0d98d9c 100644
+--- a/Makefile.toolchain
++++ b/Makefile.toolchain
+@@ -18,7 +18,7 @@ PKG_CONFIG?=pkg-config
+ BUILDCC?=gcc
+ HOSTCC?=$(HOST_CROSS_COMPILE)gcc
+ 
+-CFLAGS_WARN=-Wall -Werror -Wundef -Wstrict-prototypes -Wno-trigraphs      \
++CFLAGS_WARN=-Wall -Wundef -Wstrict-prototypes -Wno-trigraphs      \
+             -fno-strict-aliasing -fno-common                              \
+             -Werror-implicit-function-declaration -Wno-format-security    \
+             -fno-delete-null-pointer-checks -Wdeclaration-after-statement \
+-- 
+2.36.0
+

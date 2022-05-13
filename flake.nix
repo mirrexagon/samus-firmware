@@ -14,9 +14,7 @@
     in
     {
       packages = {
-        inherit (pkgs) chrome-ec-utils;
+        inherit (pkgs) chrome-ec-utils chrome-ec-samus;
       };
-
-      devShells = { };
     });
 }

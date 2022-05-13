@@ -1,0 +1,50 @@
+From 0a8e35741ecc470e6ee1a6276eb5a498fb2acdc4 Mon Sep 17 00:00:00 2001
+From: Andrew Abbott <andrew@mirx.dev>
+Date: Fri, 13 May 2022 19:04:04 +1000
+Subject: [PATCH] Remove inline specifier from interrupt context functions
+
+They aren't exposed for linking if they are specified as inline (or
+something like that).
+---
+ core/cortex-m/task.c | 4 ++--
+ include/task.h       | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/core/cortex-m/task.c b/core/cortex-m/task.c
+index 9fa3df0c9..4af64a4c4 100644
+--- a/core/cortex-m/task.c
++++ b/core/cortex-m/task.c
+@@ -162,7 +162,7 @@ void interrupt_enable(void)
+ 	asm("cpsie i");
+ }
+ 
+-inline int in_interrupt_context(void)
++int in_interrupt_context(void)
+ {
+ 	int ret;
+ 	asm("mrs %0, ipsr \n"             /* read exception number */
+@@ -170,7 +170,7 @@ inline int in_interrupt_context(void)
+ 	return ret;
+ }
+ 
+-inline int get_interrupt_context(void)
++int get_interrupt_context(void)
+ {
+ 	int ret;
+ 	asm("mrs %0, ipsr \n":"=r"(ret)); /* read exception number */
+diff --git a/include/task.h b/include/task.h
+index d7d6dd1ca..74b7c22ab 100644
+--- a/include/task.h
++++ b/include/task.h
+@@ -49,7 +49,7 @@ void interrupt_enable(void);
+ /**
+  * Return true if we are in interrupt context.
+  */
+-inline int in_interrupt_context(void);
++int in_interrupt_context(void);
+ 
+ /**
+  * Set a task event.
+-- 
+2.36.0
+
