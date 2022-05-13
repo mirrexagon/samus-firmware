@@ -14,7 +14,7 @@
     in
     {
       packages = {
-        inherit (pkgs) chrome-ec-utils chrome-ec-samus;
+        inherit (pkgs) chrome-ec-utils chrome-flashrom chrome-ec-samus;
       };
     });
 }
