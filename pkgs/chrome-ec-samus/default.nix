@@ -1,18 +1,20 @@
-{ lib, stdenv, fetchFromGitHub, gcc-arm-embedded }:
+{ lib, stdenv, fetchgit, gcc-arm-embedded, git }:
 
 stdenv.mkDerivation rec {
   name = "chrome-ec-samus";
 
-  src = fetchFromGitHub {
-    owner = "MrChromebox";
-    repo = "chrome-ec";
+  src = fetchgit {
+    url = "https://github.com/MrChromebox/chrome-ec.git";
 
     # Branch: firmware-samus-6300.B
     rev = "d535b004276b6d7a4005a0b255cec9c5f5a7acfa";
-    sha256 = "sha256-3T1yFPyh+F9NWGtV3Ocubj+NX+3aAGd527U4LveyXbk=";
+    sha256 = "sha256-giP5dGX10XIyxHoBLtM3GRrpEwwVxTFdQA8OO/fgaBU=";
+
+    # For version string generation.
+    leaveDotGit = true;
   };
 
-  nativeBuildInputs = [ gcc-arm-embedded ];
+  nativeBuildInputs = [ gcc-arm-embedded git ];
 
   patches = [
     ./Remove-Werror.patch
