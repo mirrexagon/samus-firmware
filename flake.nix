@@ -14,7 +14,7 @@
     in
     {
       packages = {
-        inherit (pkgs) ecutil;
+        inherit (pkgs) chrome-ec-utils;
       };
 
       devShells = { };

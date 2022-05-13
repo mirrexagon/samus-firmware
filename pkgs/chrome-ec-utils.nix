@@ -1,7 +1,7 @@
 { lib, stdenv, fetchFromGitHub, pkgconfig, libftdi, libusb1 }:
 
 stdenv.mkDerivation rec {
-  name = "ecutil";
+  name = "chrome-ec-utils";
 
   src = fetchFromGitHub {
     owner = "MrChromebox";

@@ -1,3 +1,3 @@
 final: prev: {
-  ecutil = prev.callPackage ./pkgs/ecutil.nix { };
+  chrome-ec-utils = prev.callPackage ./pkgs/chrome-ec-utils.nix { };
 }
