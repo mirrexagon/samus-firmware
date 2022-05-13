@@ -14,7 +14,11 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ gcc-arm-embedded ];
 
-  patches = [ ./Remove-Werror.patch ./Remove-inline-specifier-from-interrupt-context-funct.patch ];
+  patches = [
+    ./Remove-Werror.patch
+    ./Remove-inline-specifier-from-interrupt-context-funct.patch
+    ./Update-BUILDER-in-version.patch
+  ];
 
   preConfigure = ''
     patchShebangs util
