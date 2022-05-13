@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig ];
 
-  patchPhase = ''
+  preConfigure = ''
     patchShebangs util
   '';
 
