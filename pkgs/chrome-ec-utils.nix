@@ -25,12 +25,11 @@ stdenv.mkDerivation rec {
   NIX_CFLAGS_COMPILE = "-Wno-error";
 
   buildPhase = ''
-    make HOST_CROSS_COMPILE= V=1 STATIC_VERSION=1 BOARD=samus utils-host
+    make HOST_CROSS_COMPILE= utils-host
   '';
 
   installPhase = ''
     mkdir $out/bin
-
     cp $out/util/{ec_sb_firmware_update,ectool,lbcc,lbplay,stm32mon} $out/bin
   '';
 
