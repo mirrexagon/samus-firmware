@@ -14,7 +14,11 @@
     in
     {
       packages = {
-        inherit (pkgs) chrome-ec-utils chrome-flashrom chrome-ec-samus;
+        inherit (pkgs)
+          chrome-flashrom
+          chrome-ec-utils
+          chrome-ec-samus
+          coreboot-toolchain-i386;
       };
     });
 }
