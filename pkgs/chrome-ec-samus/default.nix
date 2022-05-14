@@ -30,9 +30,7 @@ stdenv.mkDerivation rec {
 
   NIX_CFLAGS_COMPILE = "-Wno-error";
 
-  buildPhase = ''
-    make HOST_CROSS_COMPILE= BOARD=samus
-  '';
+  makeFlags = [ "HOST_CROSS_COMPILE=" "BOARD=samus" ];
 
   installPhase = ''
     # Coincidentally, the EC build system outputs build artifacts to $out, so we

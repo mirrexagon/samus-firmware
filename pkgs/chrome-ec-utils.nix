@@ -24,9 +24,7 @@ stdenv.mkDerivation rec {
 
   NIX_CFLAGS_COMPILE = "-Wno-error";
 
-  buildPhase = ''
-    make HOST_CROSS_COMPILE= utils-host
-  '';
+  makeFlags = [ "HOST_CROSS_COMPILE=" "utils-host" ];
 
   installPhase = ''
     mkdir $out/bin
