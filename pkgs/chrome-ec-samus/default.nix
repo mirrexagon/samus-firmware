@@ -20,8 +20,6 @@ stdenv.mkDerivation rec {
     ./Remove-Werror.patch
     ./Remove-inline-specifier-from-interrupt-context-funct.patch
     ./Update-BUILDER-in-version.patch
-
-    ./lightbar-Enable-BLUE_PULSING.patch
   ];
 
   preConfigure = ''
