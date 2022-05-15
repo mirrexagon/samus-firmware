@@ -1,6 +1,11 @@
 # `samus-firmware`
 `samus` is the codename for the Google Chromebook Pixel 2015.
 
+## Build and flash EC firmware
+- `nix build .#chrome-ec-samus`
+- `nix shell .#chrome-flashrom`
+- `sudo flashrom -p ec -w ./result/ec.bin`
+
 ## Resources/links
 - MrChromebox custom firwmare:
     - Coreboot: https://github.com/MrChromebox/coreboot
