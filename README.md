@@ -6,6 +6,19 @@
 - `nix shell .#chrome-flashrom`
 - `sudo flashrom -p ec -w ./result/ec.bin`
 
+## Update lightbar parameters
+Change the default Google colors to the starting colors for the rainbow shift.
+
+- `nix shell .#chrome-ec-utils`
+- `sudo ectool lightbar params lightbar/new_params.txt`
+
+## Update MrChromebox Coreboot firmware to not overwrite EC firmware
+- Get a MrChromebox full ROM file, eg. `coreboot_tiano-samus-mrchromebox_20220409.rom`
+- `nix shell nixpkgs/nixos-unstable#cbfstool .#chrome-flashrom`
+- `cbfstool <rom file> remove -n ecrw`
+- `cbfstool <rom file> remove -n ecrw.hash`
+- Flash it with `sudo flashrom -n -p host --ifd -i bios -w <rom file>`
+
 ## Resources/links
 - MrChromebox custom firwmare:
     - Coreboot: https://github.com/MrChromebox/coreboot
