@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
 
     # Branch: firmware-samus-6300.B
     rev = "d535b004276b6d7a4005a0b255cec9c5f5a7acfa";
-    sha256 = "sha256-giP5dGX10XIyxHoBLtM3GRrpEwwVxTFdQA8OO/fgaBU=";
+    sha256 = "sha256-LABJd3FaTrde0hThSLbJ91BSyRrEePVzssPrl9pdYcU=";
 
     # For version string generation.
     leaveDotGit = true;
