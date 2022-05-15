@@ -20,6 +20,8 @@ stdenv.mkDerivation rec {
     ./Remove-Werror.patch
     ./Remove-inline-specifier-from-interrupt-context-funct.patch
     ./Update-BUILDER-in-version.patch
+
+    ./Replace-lightbar-S0-sequence-with-rainbow-shift.patch
   ];
 
   preConfigure = ''

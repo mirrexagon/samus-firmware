@@ -1,0 +1,131 @@
+From d8c59ddf2680aa4b59d20d6a1eab0500a81bcab8 Mon Sep 17 00:00:00 2001
+From: Andrew Abbott <andrew@mirx.dev>
+Date: Sun, 15 May 2022 19:42:26 +1000
+Subject: [PATCH] Replace lightbar S0 sequence with rainbow shift
+
+Formerly was static Google colors.
+---
+ common/lightbar.c | 80 +++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 63 insertions(+), 17 deletions(-)
+
+diff --git a/common/lightbar.c b/common/lightbar.c
+index b2901b664..183e766a7 100644
+--- a/common/lightbar.c
++++ b/common/lightbar.c
+@@ -113,16 +113,11 @@ static const struct lightbar_params_v1 default_params = {
+ 	},
+ 	.s5_idx = 5,			       /* flash red */
+ 	.color = {
+-		/*
+-		 * These values have been optically calibrated for the
+-		 * Samus LEDs to best match the official colors, described at
+-		 * https://sites.google.com/a/google.com/brandsite/the-colours
+-		 * See crosbug.com/p/33017 before making any changes.
+-		 */
+-		{0x34, 0x70, 0xb4},		/* 0: Google blue */
+-		{0xbc, 0x50, 0x2c},		/* 1: Google red */
+-		{0xd0, 0xe0, 0x00},		/* 2: Google yellow */
+-		{0x50, 0xa0, 0x40},		/* 3: Google green */
++		// Initial rainbow shift colors instead of Google colors.
++		{0x00, 0xbe, 0xc0},		/* 0: Google blue */
++		{0x7f, 0xee, 0x12},		/* 1: Google red */
++		{0xff, 0x40, 0x3e},		/* 2: Google yellow */
++		{0x7f, 0x10, 0xec},		/* 3: Google green */
+ 		/* These are primary colors */
+ 		{0x00, 0x00, 0xff},		/* 4: full blue */
+ 		{0xff, 0x00, 0x00},		/* 5: full red */
+@@ -554,6 +549,16 @@ static uint32_t sequence_S0(void)
+ 
+ #else  /* just simple google colors */
+ 
++static uint8_t S0_led_desc[NUM_LEDS][LB_CONT_MAX][3];
++static uint32_t S0_lb_ramp_delay;
++
++static inline int S0_get_interp_value(int led, int color, int interp)
++{
++	int base = S0_led_desc[led][LB_CONT_COLOR0][color];
++	int delta = S0_led_desc[led][LB_CONT_COLOR1][color] - base;
++	return base + (delta * interp / FP_SCALE);
++}
++
+ static uint32_t sequence_S0(void)
+ {
+ 	int w, i, r, g, b;
+@@ -574,26 +579,67 @@ static uint32_t sequence_S0(void)
+ 		WAIT_OR_RET(st.p.google_ramp_up);
+ 	}
+ 
+-	while (1) {
++	// Set up rainbow shift.
++
++ 	// set.rgb {0,1,2,3}.end 0xff 0xff 0xff
++	for (i = 0; i < NUM_LEDS; i++) {
++		S0_led_desc[i][LB_CONT_COLOR1][LB_COL_RED] = 0xff;
++		S0_led_desc[i][LB_CONT_COLOR1][LB_COL_GREEN] = 0xff;
++		S0_led_desc[i][LB_CONT_COLOR1][LB_COL_BLUE] = 0xff;
++	}
+ 
++ 	// set.rgb {0}.phase 0x00 0x55 0xaa
++	S0_led_desc[0][LB_CONT_PHASE][LB_COL_RED] = 0x00;
++	S0_led_desc[0][LB_CONT_PHASE][LB_COL_GREEN] = 0x55;
++	S0_led_desc[0][LB_CONT_PHASE][LB_COL_BLUE] = 0xaa;
++
++	// set.rgb {1}.phase 0x40 0x95 0xea
++	S0_led_desc[1][LB_CONT_PHASE][LB_COL_RED] = 0x40;
++	S0_led_desc[1][LB_CONT_PHASE][LB_COL_GREEN] = 0x95;
++	S0_led_desc[1][LB_CONT_PHASE][LB_COL_BLUE] = 0xea;
++
++ 	// set.rgb {2}.phase 0x80 0xd5 0x2a
++	S0_led_desc[2][LB_CONT_PHASE][LB_COL_RED] = 0x80;
++	S0_led_desc[2][LB_CONT_PHASE][LB_COL_GREEN] = 0xd5;
++	S0_led_desc[2][LB_CONT_PHASE][LB_COL_BLUE] = 0x2a;
++
++ 	// set.rgb {3}.phase 0xc0 0x15 0x6a
++	S0_led_desc[3][LB_CONT_PHASE][LB_COL_RED] = 0xc0;
++	S0_led_desc[3][LB_CONT_PHASE][LB_COL_GREEN] = 0x15;
++	S0_led_desc[3][LB_CONT_PHASE][LB_COL_BLUE] = 0x6a;
++
++	// delay.r 7813
++	S0_lb_ramp_delay = 7813;
++
++	w = 0;
++	while (1) {
+ 		get_battery_level();
+ 
+-		/* Not really low use google colors */
++		// Battery not low, do rainbow shift.
+ 		if (st.battery_level) {
++			// cycle
+ 			for (i = 0; i < NUM_LEDS; i++) {
+-				r = st.p.color[i].r;
+-				g = st.p.color[i].g;
+-				b = st.p.color[i].b;
++				r = S0_get_interp_value(i, LB_COL_RED,
++					cycle_010((w & 0xff) +
++					S0_led_desc[i][LB_CONT_PHASE][LB_COL_RED]));
++				g = S0_get_interp_value(i, LB_COL_GREEN,
++					cycle_010((w & 0xff) +
++					S0_led_desc[i][LB_CONT_PHASE][LB_COL_GREEN]));
++				b = S0_get_interp_value(i, LB_COL_BLUE,
++					cycle_010((w & 0xff) +
++					S0_led_desc[i][LB_CONT_PHASE][LB_COL_BLUE]));
+ 				lb_set_rgb(i, r, g, b);
+ 			}
++
++			WAIT_OR_RET(S0_lb_ramp_delay);
++			w++;
+ 		} else {
+ 			r = st.p.color[5].r;
+ 			g = st.p.color[5].g;
+ 			b = st.p.color[5].b;
+ 			lb_set_rgb(4, r, g, b);
++			WAIT_OR_RET(1 * SECOND);
+ 		}
+-
+-		WAIT_OR_RET(1 * SECOND);
+ 	}
+ 	return 0;
+ }
+-- 
+2.36.0
+
