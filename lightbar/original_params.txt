@@ -1,0 +1,39 @@
+2500		# .google_ramp_up
+10000		# .google_ramp_down
+2000		# .s3s0_ramp_up
+45000		# .s0_tick_delay (battery)
+30000		# .s0_tick_delay (AC)
+5000		# .s0a_tick_delay (battery)
+3000		# .s0a_tick_delay (AC)
+2000		# .s0s3_ramp_down
+5000000		# .s3_sleep_for
+2500		# .s3_ramp_up
+10000		# .s3_ramp_down
+5000		# .tap_tick_delay
+200000		# .tap_gate_delay
+3000000		# .tap_display_time
+14		# .tap_pct_red
+94		# .tap_pct_green
+35		# .tap_seg_min_on
+100		# .tap_seg_max_on
+50		# .tap_seg_osc
+5 6 7		# .tap_idx
+0x60 0x60	# .osc_min (battery, AC)
+0xd0 0xd0	# .osc_max (battery, AC)
+24 24		# .w_ofs (battery, AC)
+0xcc 0xff	# .bright_bl_off_fixed (battery, AC)
+0xcc 0xff	# .bright_bl_on_min (battery, AC)
+0xcc 0xff	# .bright_bl_on_max (battery, AC)
+14 40 99	# .battery_threshold
+5 4 4 4		# .s0_idx[] (battery)
+4 4 4 4		# .s0_idx[] (AC)
+5 255 255 255	# .s3_idx[] (battery)
+255 255 255 255	# .s3_idx[] (AC)
+0x34 0x70 0xb4	# color[0]
+0xbc 0x50 0x2c	# color[1]
+0xd0 0xe0 0x00	# color[2]
+0x50 0xa0 0x40	# color[3]
+0x00 0x00 0xff	# color[4]
+0xff 0x00 0x00	# color[5]
+0xff 0xff 0x00	# color[6]
+0x00 0xff 0x00	# color[7]
