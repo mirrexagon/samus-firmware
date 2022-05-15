@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
   meta = with lib; {
     description = "Coreboot i386 toolchain (from MrChromebox fork)";
     homepage = "https://github.com/MrChromebox/coreboot";
-    license = licenses.gpl2;
+    license = licenses.gpl2Only;
     maintainers = with maintainers; [ mirrexagon ];
   };
 }
