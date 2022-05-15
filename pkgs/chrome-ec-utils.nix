@@ -1,17 +1,12 @@
-{ lib, stdenv, fetchFromGitHub, pkgconfig, libftdi, libusb1 }:
+{ lib, stdenv, fetchgit, pkgconfig, libftdi, libusb1 }:
 
 stdenv.mkDerivation rec {
   name = "chrome-ec-utils";
 
-  src = fetchFromGitHub {
-    owner = "MrChromebox";
-    repo = "chrome-ec";
-
-    # Branch: firmware-samus-6300.B
-    # But before a commit that removed these tool targets:
-    # a5ddef88fbdf8b97533c0eebc2ce8d9e57aa479d
-    rev = "84f7b3e60d7e4956350326d4552425f630336659";
-    sha256 = "sha256-669CqKdB+0OYKabr9P2AU9PIYE5dkI6xcRpT2/AZSHA=";
+  src = fetchgit {
+    url = "https://chromium.googlesource.com/chromiumos/platform/ec";
+    rev = "3ac4093e2caeb2ec9fdaa3cbc0112d3e61461d7e";
+    sha256 = "sha256-weBh7s6R8LRwBPjgqnd69MAlH1Rp2ES1K13YoWh1eto=";
   };
 
   buildInputs = [ libftdi libusb1 ];
