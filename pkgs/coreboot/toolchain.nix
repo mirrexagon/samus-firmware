@@ -1,3 +1,8 @@
+# TODO:
+# - Look at https://maxwell.ydns.eu/git/rnhmjoj/nixboot
+# - Make separate flake for building Coreboot
+# - Don't use gen-sources.sh. determine all that in the toolchain derivation from the original source
+
 { lib, stdenv, fetchFromGitHub, gnat11, ncurses, m4, flex, bison, zlib, pkgconfig, curl, git }:
 
 stdenv.mkDerivation rec {
