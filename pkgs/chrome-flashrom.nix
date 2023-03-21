@@ -1,24 +1,17 @@
-{ lib, stdenv, fetchgit, pkgconfig, libftdi1, libusb1, pciutils }:
+{ lib, stdenv, meson, ninja, fetchgit, pkgconfig, libftdi1, libusb1, pciutils, cmocka, sphinx }:
 
 stdenv.mkDerivation rec {
   name = "chrome-flashrom";
 
   src = fetchgit {
     url = "https://chromium.googlesource.com/chromiumos/third_party/flashrom";
-    rev = "8401ef7702778a6ba8fec6285adcdc82d0203916";
-    sha256 = "sha256-qoQAiqLb9ffmsC64+4HfiWOc/iC7ddD/BYkmbbfshag=";
+    rev = "bf4cc23d9bc616141e4c94ae491d7e9614e02b10";
+    sha256 = "sha256-UfYbw4PmTXZpMAZeon1GRjseMvgo394N33OVjXuy930=";
   };
 
   buildInputs = [ libftdi1 libusb1 pciutils ];
 
-  nativeBuildInputs = [ pkgconfig ];
-
-  preConfigure = ''
-    substituteInPlace Makefile \
-      --replace 'FEATURE_CFLAGS' 'FEATURE_FLAGS'
-  '';
-
-  makeFlags = [ "PREFIX=$(out)" ];
+  nativeBuildInputs = [ pkgconfig meson ninja cmocka sphinx ];
 
   meta = with lib;
     {
