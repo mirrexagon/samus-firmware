@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchgit, pkgconfig, libftdi, libusb1 }:
+{ lib, stdenv, fetchgit, pkg-config, libftdi, libusb1 }:
 
 stdenv.mkDerivation rec {
   name = "chrome-ec-utils";
@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ libftdi libusb1 ];
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkg-config ];
 
   preConfigure = ''
     patchShebangs util

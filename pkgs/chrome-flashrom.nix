@@ -1,4 +1,4 @@
-{ lib, stdenv, meson, ninja, fetchgit, pkgconfig, libftdi1, libusb1, pciutils, cmocka, sphinx }:
+{ lib, stdenv, meson, ninja, fetchgit, pkg-config, libftdi1, libusb1, pciutils, cmocka, sphinx }:
 
 stdenv.mkDerivation rec {
   name = "chrome-flashrom";
@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ libftdi1 libusb1 pciutils ];
 
-  nativeBuildInputs = [ pkgconfig meson ninja cmocka sphinx ];
+  nativeBuildInputs = [ pkg-config meson ninja cmocka sphinx ];
 
   meta = with lib;
     {

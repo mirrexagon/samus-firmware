@@ -3,7 +3,7 @@
 # - Make separate flake for building Coreboot
 # - Don't use gen-sources.sh. determine all that in the toolchain derivation from the original source
 
-{ lib, stdenv, fetchFromGitHub, gnat11, ncurses, m4, flex, bison, zlib, pkgconfig, curl, git }:
+{ lib, stdenv, fetchFromGitHub, gnat11, ncurses, m4, flex, bison, zlib, pkg-config, curl, git }:
 
 stdenv.mkDerivation rec {
   name = "coreboot-toolchain-i386";
@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
     #clang
     zlib
     #acpica-tools # iasl
-    pkgconfig
+    pkg-config
     curl
     git
   ];
